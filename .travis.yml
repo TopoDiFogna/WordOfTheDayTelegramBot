@@ -1,0 +1,44 @@
+sudo: required
+
+language: python
+
+python:
+  - "3.6"
+  - "3.7"
+
+install:
+  - pip install flake8
+
+services:
+  - docker
+
+notifications:
+  email: false
+
+branches:
+  only:
+    - master
+
+before_install:
+  # Update docker
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
+  # Build docker image
+  - echo "$TELEGRAM_TOKEN" > .token
+  - docker build -t topodifogna/wordofthedaytelegrambot .
+  # run docker container
+  - docker run -d --name=wordofthedaytelegrambot topodifogna/wordofthedaytelegrambot
+  - docker ps -a
+  - docker stats --no-stream
+
+after_success:
+  # Update online image
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin;
+    docker push topodifogna/wordofthedaytelegrambot;
+    fi; fi;
+
+script:
+  - flake8 . --max-line-length=120
