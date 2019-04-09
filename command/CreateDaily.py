@@ -60,4 +60,3 @@ class CreateDaily(CommandHandler):
             unix_epoch = datetime.datetime.fromtimestamp(row[1])
 
             self.job_queue.run_daily(WotD.get_wotd, unix_epoch.time(), name=row[0])
-

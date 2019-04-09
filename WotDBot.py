@@ -12,7 +12,7 @@ class Bot(telegram.bot.Bot):
     def __del__(self):
         try:
             self._msg_queue.stop()
-        except:
+        except RuntimeError:
             pass
 
     @mq.queuedmessage

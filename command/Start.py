@@ -16,4 +16,3 @@ class Start(CommandHandler):
     def start(update, context):
         logger.debug("Called start method")
         context.bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
-
