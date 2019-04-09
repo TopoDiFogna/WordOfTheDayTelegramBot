@@ -1,7 +1,7 @@
 FROM alpine:3.9.2
 
 # install system dependencies
-RUN apk update && apk add python3 python3-dev libffi-dev openssl-dev build-case
+RUN apk update && apk add python3 python3-dev libffi-dev openssl-dev build-base
 
 # set python path and working directory
 WORKDIR /opt/wordofthedaytelegrambot
