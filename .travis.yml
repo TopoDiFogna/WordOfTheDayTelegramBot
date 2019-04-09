@@ -2,6 +2,8 @@ sudo: required
 
 language: python
 
+dist: xenial
+
 python:
   - "3.6"
   - "3.7"
@@ -35,8 +37,8 @@ before_install:
 
 after_success:
   # Update online image
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin;
+  - if [ $TRAVIS_BRANCH == "master" ]; then if [ $TRAVIS_PULL_REQUEST == "false" ]; then
+    echo $DOCKER_PASSWORD | docker login -u=$DOCKER_USERNAME --password-stdin;
     docker push topodifogna/wordofthedaytelegrambot;
     fi; fi;
 
