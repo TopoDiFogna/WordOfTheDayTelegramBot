@@ -21,6 +21,12 @@ class CreateDaily(CommandHandler):
 
     def create_daily_job(self, update, context):
         logger.debug("Called create_daily_job method")
+
+        if len(context.args) != 1:
+            context.bot.send_message(chat_id=update.message.chat_id, text='Devi mandarmi solo l\'ora a cui vuoi la '
+                                                                          'parola del giorno')
+            return
+
         try:
             conn = sqlite3.connect(self.db_name)
 
@@ -31,16 +37,18 @@ class CreateDaily(CommandHandler):
 
             if query_result is None:
 
-                WotD.get_wotd(update, context)
+
 
                 scheduled_datetime = datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1),
                                                                datetime.time.fromisoformat(context.args[0]))
                 conn.execute('INSERT INTO enabled_chats (chat_id, time_of_the_day) VALUES (?, ?)',
                              (update.message.chat_id, scheduled_datetime.timestamp()))
 
+                self.job_queue.run_daily(WotD.get_wotd, scheduled_datetime.time(), name=str(update.message.chat_id))
+
                 conn.commit()
 
-                self.job_queue.run_daily(WotD.get_wotd, scheduled_datetime.time(), name=str(update.message.chat_id))
+                WotD.get_wotd(update, context)
 
             else:
                 unix_epoch = datetime.datetime.fromtimestamp(query_result[1])
