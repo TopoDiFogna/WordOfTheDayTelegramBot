@@ -37,8 +37,12 @@ class CreateDaily(CommandHandler):
 
             if query_result is None:
 
+                scheduled_time_hour, scheduled_time_minutes = context.args[0].split(':')
+
                 scheduled_datetime = datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1),
-                                                               datetime.time.fromisoformat(context.args[0]))
+                                                               datetime.time(int(scheduled_time_hour),
+                                                                             int(scheduled_time_minutes)))
+
                 conn.execute('INSERT INTO enabled_chats (chat_id, time_of_the_day) VALUES (?, ?)',
                              (update.message.chat_id, scheduled_datetime.timestamp()))
 
