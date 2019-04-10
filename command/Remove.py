@@ -27,7 +27,10 @@ class Remove(CommandHandler):
         if query_result is not None:
             conn.execute('DELETE FROM enabled_chats WHERE chat_id = ?', (update.message.chat_id,))
 
-            self.job_queue.get_jobs_by_name(str(update.message.chat_id)).schedule_removal()
+            for job in self.job_queue.get_jobs_by_name(str(update.message.chat_id)):
+                job.schedule_removal()
+
+            conn.commit()
 
             context.bot.send_message(chat_id=update.message.chat_id,
                                      text='Va bene, non ti manderò più la parola del giorno')
