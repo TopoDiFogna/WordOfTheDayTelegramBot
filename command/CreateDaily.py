@@ -5,6 +5,7 @@ import datetime
 from telegram.ext import CommandHandler
 
 from command.WordOfTheDay import WotD
+from wotd_sources import unaparolaalgiorno
 
 logger = logging.getLogger()
 
@@ -46,7 +47,7 @@ class CreateDaily(CommandHandler):
                 conn.execute('INSERT INTO enabled_chats (chat_id, time_of_the_day) VALUES (?, ?)',
                              (update.message.chat_id, scheduled_datetime.timestamp()))
 
-                self.job_queue.run_daily(WotD.get_wotd, scheduled_datetime.time(), name=str(update.message.chat_id))
+                self.job_queue.run_daily(self.send_wotd, scheduled_datetime.time(), name=str(update.message.chat_id))
 
                 conn.commit()
 
@@ -70,3 +71,11 @@ class CreateDaily(CommandHandler):
             unix_epoch = datetime.datetime.fromtimestamp(row[1])
 
             self.job_queue.run_daily(WotD.get_wotd, unix_epoch.time(), name=row[0])
+
+    @staticmethod
+    def send_wotd(context):
+        logger.debug("Called send_wotd method")
+
+        unaparolaalgiorno_word, unaparolaalgiorno_desc = unaparolaalgiorno.get_unaparolaalgiorno_wotd()
+        job = context.job
+        context.bot.send_message(job.context, text=unaparolaalgiorno_word + ': ' + unaparolaalgiorno_desc)

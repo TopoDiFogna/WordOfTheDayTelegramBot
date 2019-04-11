@@ -15,7 +15,7 @@ from command.Start import Start
 from command.WordOfTheDay import WotD
 
 requests_cache.install_cache(cache_name='cache', backend='sqlite', expire_after=14400)
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 token = open('.token').read().strip()
 request = Request(con_pool_size=8)
@@ -75,3 +75,5 @@ if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
     ''')
 
 updater.start_polling()
+
+updater.idle()
