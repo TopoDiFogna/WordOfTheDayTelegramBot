@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="cache" uuid="3c697aa1-b176-4f01-81e5-eb3d7ac1e268">
+    <data-source source="LOCAL" name="cache" uuid="a2c996db-67c6-4179-b417-9c165a0f3c9c">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:I:\repo\word-of-the-day-bot\cache.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:I:\repo\word-of-the-day-bot\data\cache.sqlite</jdbc-url>
       <driver-properties>
         <property name="enable_load_extension" value="true" />
       </driver-properties>
@@ -18,14 +18,22 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="database.sqlite" uuid="5538394b-831a-45bd-8cba-b4557f4ec849">
+    <data-source source="LOCAL" name="database" uuid="814f0bc1-a24a-451c-a4aa-ef5d11ef1e5e">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/database.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:I:\repo\word-of-the-day-bot\data\database.sqlite</jdbc-url>
       <driver-properties>
         <property name="enable_load_extension" value="true" />
       </driver-properties>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/license.txt</url>
+        </library>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.25.1/sqlite-jdbc-3.25.1.jar</url>
+        </library>
+      </libraries>
     </data-source>
   </component>
 </project>

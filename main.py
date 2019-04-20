@@ -15,7 +15,7 @@ from command.Remove import Remove
 from command.Start import Start
 from command.WordOfTheDay import WotD
 
-requests_cache.install_cache(cache_name='cache', backend='sqlite', expire_after=14400)
+requests_cache.install_cache(cache_name='data/cache', backend='sqlite', expire_after=14400)
 
 with open('conf/logging.json') as json_data_file:
     logging_json = json.load(json_data_file)
@@ -28,7 +28,7 @@ updater = Updater(bot=bot, use_context=True)
 
 dispatcher = updater.dispatcher
 job_queue = updater.job_queue
-db_name = 'database.sqlite'
+db_name = 'data/database.sqlite'
 
 
 def initialize_db():
