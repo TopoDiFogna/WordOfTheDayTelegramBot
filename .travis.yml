@@ -29,9 +29,10 @@ before_install:
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
   # Build docker image
   - if [ -n "$TRAVIS_TAG" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
-      docker build -t wordofthedaytelegrambot:"$TRAVIS_TAG" . ;
+      echo "$TRAVIS_TAG";
+      docker build -t "$DOCKER_USERNAME"/wordofthedaytelegrambot:"$TRAVIS_TAG" . ;
     else
-      docker build -t wordofthedaytelegrambot . ;
+      docker build -t "$DOCKER_USERNAME"/wordofthedaytelegrambot . ;
     fi;
   - echo "$TELEGRAM_TOKEN" > conf/.token
   # run docker container
@@ -48,7 +49,7 @@ after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin;
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
       if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-        docker push wordofthedaytelegrambot:"$TRAVIS_TAG";
+        docker push "$DOCKER_USERNAME"/wordofthedaytelegrambot:"$TRAVIS_TAG";
       fi;
     elif [ "$TRAVIS_BRANCH" == "develop" ]; then
       if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
