@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import logging
+import logging.config
+import json
 import sqlite3
 
 import requests_cache
@@ -15,9 +16,12 @@ from command.Start import Start
 from command.WordOfTheDay import WotD
 
 requests_cache.install_cache(cache_name='cache', backend='sqlite', expire_after=14400)
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-token = open('.token').read().strip()
+with open('conf/logging.json') as json_data_file:
+    logging_json = json.load(json_data_file)
+    logging.config.dictConfig(logging_json)
+
+token = open('conf/.token').read().strip()
 request = Request(con_pool_size=8)
 bot = Bot(token, request=request)
 updater = Updater(bot=bot, use_context=True)
