@@ -31,8 +31,18 @@ before_install:
   - if [ -n "$TRAVIS_TAG" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
       echo "$TRAVIS_TAG";
       docker build -t "$DOCKER_USERNAME"/wordofthedaytelegrambot:"$TRAVIS_TAG" . ;
+      docker run -d --name=wordofthedaytelegrambot
+      --mount type=bind,source=$TRAVIS_BUILD_DIR/data/,target=/opt/wordofthedaytelegrambot/data/
+      --mount type=bind,source=$TRAVIS_BUILD_DIR/conf/.token,target=/opt/wordofthedaytelegrambot/conf/.token
+      --mount type=bind,source=$TRAVIS_BUILD_DIR/logs/,target=/opt/wordofthedaytelegrambot/logs/
+      "$DOCKER_USERNAME"/wordofthedaytelegrambot:"$TRAVIS_TAG" ;
     else
       docker build -t "$DOCKER_USERNAME"/wordofthedaytelegrambot . ;
+      docker run -d --name=wordofthedaytelegrambot
+      --mount type=bind,source=$TRAVIS_BUILD_DIR/data/,target=/opt/wordofthedaytelegrambot/data/
+      --mount type=bind,source=$TRAVIS_BUILD_DIR/conf/.token,target=/opt/wordofthedaytelegrambot/conf/.token
+      --mount type=bind,source=$TRAVIS_BUILD_DIR/logs/,target=/opt/wordofthedaytelegrambot/logs/
+      "$DOCKER_USERNAME"/wordofthedaytelegrambot ;
     fi;
   - echo "$TELEGRAM_TOKEN" > conf/.token
   # run docker container
@@ -40,7 +50,7 @@ before_install:
     --mount type=bind,source=$TRAVIS_BUILD_DIR/data/,target=/opt/wordofthedaytelegrambot/data/
     --mount type=bind,source=$TRAVIS_BUILD_DIR/conf/.token,target=/opt/wordofthedaytelegrambot/conf/.token
     --mount type=bind,source=$TRAVIS_BUILD_DIR/logs/,target=/opt/wordofthedaytelegrambot/logs/
-    wordofthedaytelegrambot
+    "$DOCKER_USERNAME"/wordofthedaytelegrambot
   - docker ps -a
   - docker stats --no-stream
 
