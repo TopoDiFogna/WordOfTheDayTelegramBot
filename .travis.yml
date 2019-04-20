@@ -32,7 +32,7 @@ before_install:
   - echo "$TELEGRAM_TOKEN" > .token
   # run docker container
   - docker run -d --name=wordofthedaytelegrambot
-    --mount type=bind,source=.token,target=/opt/wordofthedaytelegrambot/.token,readonly
+    --mount type=bind,source=$TRAVIS_BUILD_DIR/.token,target=/opt/wordofthedaytelegrambot/.token,readonly
     topodifogna/wordofthedaytelegrambot
   - docker ps -a
   - docker stats --no-stream
