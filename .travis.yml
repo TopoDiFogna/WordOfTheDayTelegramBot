@@ -20,6 +20,7 @@ branches:
   only:
     - master
     - develop
+    - ^v([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)
 
 before_install:
   # Update docker
@@ -28,15 +29,14 @@ before_install:
   - sudo apt-get update
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
   # Build docker image
-  - if [ -n "$TRAVIS_TAG" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
-      echo "$TRAVIS_TAG";
+  - if [ -n "$TRAVIS_TAG" ]; then
       docker build -t "$DOCKER_USERNAME"/wordofthedaytelegrambot:"$TRAVIS_TAG" . ;
     else
       docker build -t "$DOCKER_USERNAME"/wordofthedaytelegrambot . ;
     fi;
   - echo "$TELEGRAM_TOKEN" > conf/.token
   # run docker container
-  - if [ -n "$TRAVIS_TAG" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
+  - if [ -n "$TRAVIS_TAG" ]; then
       docker run -d --name=wordofthedaytelegrambot
       --mount type=bind,source=$TRAVIS_BUILD_DIR/data/,target=/opt/wordofthedaytelegrambot/data/
       --mount type=bind,source=$TRAVIS_BUILD_DIR/conf/.token,target=/opt/wordofthedaytelegrambot/conf/.token
@@ -55,9 +55,12 @@ before_install:
 after_success:
   # Update online image
   - echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin;
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-      if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+  - if [ -n "$TRAVIS_TAG" ]; then
         docker push "$DOCKER_USERNAME"/wordofthedaytelegrambot:"$TRAVIS_TAG";
+      fi;
+    elif [ "$TRAVIS_BRANCH" == "master" ]; then
+      if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+        docker push "$DOCKER_USERNAME"/wordofthedaytelegrambot;
       fi;
     elif [ "$TRAVIS_BRANCH" == "develop" ]; then
       if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
