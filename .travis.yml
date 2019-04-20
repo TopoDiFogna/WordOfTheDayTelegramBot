@@ -28,7 +28,7 @@ before_install:
   - sudo apt-get update
   - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-ce
   # Build docker image
-  - docker build -t topodifogna/wordofthedaytelegrambot .
+  - docker build -t "$DOCKER_USERNAME"/wordofthedaytelegrambot .
   - echo "$TELEGRAM_TOKEN" > conf/.token
   # run docker container
   - docker run -d --name=wordofthedaytelegrambot
@@ -41,10 +41,16 @@ before_install:
 
 after_success:
   # Update online image
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin;
-    docker push topodifogna/wordofthedaytelegrambot;
-    fi; fi;
+  - echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin;
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+      if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+        docker push "$DOCKER_USERNAME"/wordofthedaytelegrambot:"$TRAVIS_TAG";
+      fi;
+    elif [ "$TRAVIS_BRANCH" == "develop" ]; then
+      if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+        docker push "$DOCKER_USERNAME"/wordofthedaytelegrambot;
+      fi;
+    fi;
 
 script:
   - flake8 . --max-line-length=120
