@@ -32,7 +32,6 @@ before_install:
   - echo "$TELEGRAM_TOKEN" > conf/.token
   # run docker container
   - docker run -d --name=wordofthedaytelegrambot
-    --mount type=bind,source=$TRAVIS_BUILD_DIR/.token,target=/opt/wordofthedaytelegrambot/.token,readonly
     --mount type=bind,source=$TRAVIS_BUILD_DIR/database.db,target=/opt/wordofthedaytelegrambot/database.db
     --mount type=bind,source=$TRAVIS_BUILD_DIR/conf/,target=/opt/wordofthedaytelegrambot/conf/
     --mount type=bind,source=$TRAVIS_BUILD_DIR/logs/,target=/opt/wordofthedaytelegrambot/logs/
