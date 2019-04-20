@@ -31,8 +31,8 @@ before_install:
   - docker build -t topodifogna/wordofthedaytelegrambot .
   - echo "$TELEGRAM_TOKEN" > .token
   # run docker container
-  - docker run -d --name=wordofthedaytelegrambot \
-    --mount type=bind,source=.token,target=/opt/wordofthedaytelegrambot/.token,readonly \
+  - docker run -d --name=wordofthedaytelegrambot
+    --mount type=bind,source=.token,target=/opt/wordofthedaytelegrambot/.token,readonly
     topodifogna/wordofthedaytelegrambot
   - docker ps -a
   - docker stats --no-stream
