@@ -66,5 +66,4 @@ deploy:
   - provider: script
     script: bash scripts/master-deploy.sh
     on:
-        branch: master
-        condition: -z $TRAVIS_TAG
+      all_branches: true
