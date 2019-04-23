@@ -47,6 +47,9 @@ script:
   # Run quality gate test
   - flake8 . --max-line-length=120
 
+after_success:
+  - echo SUCCESS
+
 before_deploy:
   # Login to docker
   - echo "$DOCKER_PASSWORD" | docker login -u="$DOCKER_USERNAME" --password-stdin;
