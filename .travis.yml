@@ -66,4 +66,4 @@ deploy:
     script: bash scripts/master-deploy.sh
     on:
         branch: master
-        condition: $TRAVIS_TAG = ^v([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$
+        condition: $TRAVIS_TAG = "^v([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$"
