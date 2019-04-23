@@ -17,7 +17,6 @@ branches:
   only:
     - master
     - develop
-    - /^v([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)$/
 
 before_install:
   # Add docker keys
@@ -54,13 +53,14 @@ before_deploy:
 
 deploy:
   # Update online image as nightly
-  provider: script
-  script: bash scripts/develop-deploy.sh
-  on:
-    branch: develop
+  - provider: script
+    script: bash scripts/develop-deploy.sh
+    on:
+      branch: develop
 
   # Update online image tagging it
   - provider: script
     script: bash scripts/master-deploy.sh
     on:
         branch: master
+        condition: $TRAVIS_TAG = ^v([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$
