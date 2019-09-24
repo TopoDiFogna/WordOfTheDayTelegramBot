@@ -6,7 +6,7 @@ def get_unaparolaalgiorno_wotd():
     response = requests.get('https://unaparolaalgiorno.it/')
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    unaparolaalgiorno_word = soup.find(class_='parola').contents[1].text
-    unaparolaalgiorno_desc = soup.find(class_='significato').text[4:]
+    unaparolaalgiorno_word = soup.find('div', {'id': 'home-todays'}).contents[1].contents[0].text
+    unaparolaalgiorno_desc = soup.find(class_='word-significato')
 
     return unaparolaalgiorno_word, unaparolaalgiorno_desc
