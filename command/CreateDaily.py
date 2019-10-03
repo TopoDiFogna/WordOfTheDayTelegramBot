@@ -78,4 +78,4 @@ class CreateDaily(CommandHandler):
 
         unaparolaalgiorno_word, unaparolaalgiorno_desc = unaparolaalgiorno.get_unaparolaalgiorno_wotd()
         job = context.job
-        context.bot.send_message(job.context, text=unaparolaalgiorno_word + ': ' + unaparolaalgiorno_desc)
+        context.bot.send_message(job.name, text=unaparolaalgiorno_word + ': ' + unaparolaalgiorno_desc)

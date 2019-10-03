@@ -1,12 +1,15 @@
 import requests
-from bs4 import BeautifulSoup
+import json
 
 
 def get_unaparolaalgiorno_wotd():
-    response = requests.get('https://unaparolaalgiorno.it/')
-    soup = BeautifulSoup(response.text, 'html.parser')
+    url = 'https://v3.unaparolaalgiorno.it/api/words/home'
+    headers = {'Accept': 'application/json'}
+    response = requests.get(url, headers=headers)
 
-    unaparolaalgiorno_word = soup.find(class_='parola').contents[1].text
-    unaparolaalgiorno_desc = soup.find(class_='significato').text[4:]
+    body = json.loads(response.text)
+
+    unaparolaalgiorno_word = body['oggi']['parola']
+    unaparolaalgiorno_desc = body['oggi']['significato']
 
     return unaparolaalgiorno_word, unaparolaalgiorno_desc
