@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import logging.config
 import json
+import logging.config
 import sqlite3
 
 import requests_cache
@@ -9,7 +9,6 @@ from telegram.ext import Updater
 from telegram.utils.request import Request
 
 from WotDBot import Bot
-
 from command.CreateDaily import CreateDaily
 from command.Remove import Remove
 from command.Start import Start

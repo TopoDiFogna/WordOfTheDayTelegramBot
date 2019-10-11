@@ -1,10 +1,9 @@
+import datetime
 import logging
 import sqlite3
-import datetime
 
 from telegram.ext import CommandHandler
 
-from command.WordOfTheDay import WotD
 from wotd_sources import unaparolaalgiorno
 
 logger = logging.getLogger()
