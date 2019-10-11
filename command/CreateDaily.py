@@ -51,7 +51,8 @@ class CreateDaily(CommandHandler):
 
                 conn.commit()
 
-                WotD.get_wotd(update, context)
+                context.bot.send_message(chat_id=update.message.chat_id,
+                                         text='Ti manderò la parola ogni giorno alle ' + str(context.args[0]))
 
             else:
                 unix_epoch = datetime.datetime.fromtimestamp(query_result[1])
@@ -70,7 +71,7 @@ class CreateDaily(CommandHandler):
         for row in cursor.execute('SELECT chat_id, time_of_the_day FROM enabled_chats'):
             unix_epoch = datetime.datetime.fromtimestamp(row[1])
 
-            self.job_queue.run_daily(WotD.get_wotd, unix_epoch.time(), name=row[0])
+            self.job_queue.run_daily(self.send_wotd, unix_epoch.time(), name=row[0])
 
     @staticmethod
     def send_wotd(context):
